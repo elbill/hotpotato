@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ГОРЕЩ КАРТОФ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #4a4a4a;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            color: #d9534f;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px #fff;
+        }
+        .question {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #ff5722;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background-color: #e64a19;
+            transform: scale(1.05);
+        }
+        .gif-container {
+            margin-top: 20px;
+        }
+        @keyframes moveRandomly {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(20px, -20px); }
+            50% { transform: translate(-20px, 20px); }
+            75% { transform: translate(20px, 20px); }
+            100% { transform: translate(-20px, -20px); }
+        }
+        .animate {
+            animation: moveRandomly 1s infinite;
+        }
+        .gif-container img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1><b>ГОРЕЩ КАРТОФ</b></h1>
+        <div id="instructions" class="question">Натиснете бутона Старт, за да започнете играта.</div>
+        <button id="start" class="button">Start</button>
+        <button id="next" class="button" style="display:none;">Следващ</button>
+
+        <audio id="music" loop>
+            <source src="music-file.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="scream-sound">
+            <source src="scream.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <div id="gif-container" class="gif-container"></div>
+    </div>
+
+    <script>
+        const startButton = document.getElementById('start');
+        const nextButton = document.getElementById('next');
+        const music = document.getElementById('music');
+        const screamSound = document.getElementById('scream-sound');
+        const instructions = document.getElementById('instructions');
+        const gifContainer = document.getElementById('gif-container');
+
+        const questions = [
+    "След много размисъл, въпреки че приятелят ви прави расистки шеги, вие решавате да останете негов приятел и да се опитате да го образовате.",
+    "Член на семейството прави расистка шега по време на вечеря, вие не се конфронтирате с него за това, защото това е просто шега.",
+    "Вашият приятел ви казва за намерението си да прави графити, вие няма да участвате и не изразявате несъгласието си.",
+    "Решавате да съобщите за сексистки инцидент на директора на училището.",
+    "На училищните избори решавате да гласувате за приятеля си, въпреки че той очевидно не е квалифициран.",
+    "Оспорвате дискриминационните шеги или коментари всеки път, когато ги чуете.",
+    "Давате на приятеля си домашното, за да го представи като свое собствено.",
+    "Поемате допълнителна работа за групов проект, защото съотборникът не допринася достатъчно.",
+    "Решавате да изневерите на тест, защото по-голямата част от класа ще го направи.",
+    "Дистанцирате се от ваш приятел, който е обвинен в сексуален тормоз.",
+    "Изправяте се срещу брат или сестра си за тяхното поведение на тормоз.",
+    "Директно се изправяте срещу връстник, който постоянно не уважава учителите.",
+    "Пишете анонимно писмо до училищната администрация, в което подробно описвате неуважителното поведение на учителя.",
+    "Намерихте голяма сума пари без идентификация и я дарихте за кауза, в която вярвате.",
+    "Вие сте честни с приятеля си за вредното му поведение (той ви се подиграва на шега)."
+        ];
+
+        function playMusic() {
+            music.play();
+            displayRandomGif();
+            const title = document.querySelector('h1');
+            title.classList.add('animate');
+            setTimeout(() => {
+                music.pause();
+                screamSound.play();
+                gifContainer.innerHTML = "";
+                nextButton.style.display = 'inline-block';
+                instructions.textContent = questions[Math.floor(Math.random() * questions.length)];
+                title.classList.remove('animate');
+            }, Math.random() * 5000 + 5000);
+        }
+
+        function displayRandomGif() {
+            const randomGif = Math.floor(Math.random() * 10) + 1;
+            gifContainer.innerHTML = `<img src="${randomGif}.gif" alt="Random GIF">`;
+        }
+
+        startButton.addEventListener('click', () => {
+            startButton.style.display = 'none';
+            instructions.textContent = "Предайте картофите, докато звучи музиката!";
+            playMusic();
+        });
+
+        nextButton.addEventListener('click', () => {
+            nextButton.style.display = 'none';
+            instructions.textContent = "Предайте картофите, докато звучи музиката!";
+            playMusic();
+        });
+    </script>
+</body>
+</html>
